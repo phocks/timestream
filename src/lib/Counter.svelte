@@ -2,7 +2,7 @@
   let currentUnixTime = $state(Math.floor(Date.now() / 1000));
   let timeInFuture = $state(1705330800);
 
-  function secondsToDhms(seconds: number) {
+  const secondsToDhms = (seconds: number) => {
     seconds = Number(seconds);
     var d = Math.floor(seconds / (3600 * 24));
     var h = Math.floor((seconds % (3600 * 24)) / 3600);
@@ -16,9 +16,15 @@
     return dDisplay + hDisplay + mDisplay + sDisplay;
   }
 
-  setInterval(() => {
-    currentUnixTime = Math.floor(Date.now() / 1000);
-  }, 1000);
+  $effect(() => {
+    setInterval(() => {
+      currentUnixTime = Math.floor(Date.now() / 1000);
+    }, 1000);
+
+    return () => {
+      console.log("cleanup!");
+    };
+  });
 
   let timeDiff = $derived(timeInFuture - currentUnixTime);
 </script>
